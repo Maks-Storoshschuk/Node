@@ -11,16 +11,16 @@ const path = require('path');
 // const age= 26
 // const gender ="female"
 
-//Функція для створення файлів
-// fs.writeFile(`${__dirname}/Boys/${name_path}.json`,`{"name":"${name_path}","age":${age},"gender":"${gender}"}`,(error)=>{
+// Функція для створення файлів
+// fs.writeFile(path.join(__dirname,'Boys',`${name_path}.json`),`{"name":"${name_path}","age":${age},"gender":"${gender}"}`,(error)=>{
 //     if (error){
 //         console.log(error)
 //     }
 //     console.log("success")
 // })
 
-//Функція для читання файлів
-// fs.readFile(`${__dirname}/Boys/${name_path}.json`,((err, data) => {
+// Функція для читання файлів
+// fs.readFile(path.join(__dirname,'Boys',`${name_path}.json`),((err, data) => {
 //     if(err){
 //         console.log(err)
 //     }
@@ -29,7 +29,6 @@ const path = require('path');
 
 //Функція сортування по папках
 function refactor(sex, from, to) {
-
     fs.readdir(path.join(__dirname,`${from}`), (err, data) => {
         if (err) {
             console.log(err);
@@ -52,7 +51,6 @@ function refactor(sex, from, to) {
                         }
                     );
                 }
-
             }))
         );
     });
