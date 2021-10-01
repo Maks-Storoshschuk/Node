@@ -29,13 +29,13 @@ const path = require('path');
 
 //Функція сортування по папках
 function refactor(sex, from, to) {
-    fs.readdir(path.join(__dirname,`${from}`), (err, data) => {
+    fs.readdir(path.join(__dirname,from), (err, data) => {
         if (err) {
             console.log(err);
         }
 
         data.forEach(data =>
-            fs.readFile(path.join(__dirname,`${from}`,`${data}`), ((err, data) => {
+            fs.readFile(path.join(__dirname,from,data), ((err, data) => {
                 if (err) {
                     console.log(err);
                     return;
@@ -44,7 +44,7 @@ function refactor(sex, from, to) {
                 const gender = JSON.parse(data.toString());
 
                 if (gender.gender === sex) {
-                    fs.rename(path.join(__dirname, `${from}`,`${gender.name}.json`), path.join(__dirname, `${to}`,`${gender.name}.json`), err1 => {
+                    fs.rename(path.join(__dirname, from,`${gender.name}.json`), path.join(__dirname, to,`${gender.name}.json`), err1 => {
                             if (err1) {
                                 console.log(err);
                             }
