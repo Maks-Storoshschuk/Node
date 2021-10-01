@@ -1,0 +1,1 @@
+{"name":"Vasiliy","gender":"male","age":24}
