@@ -17,17 +17,17 @@ const users=[
 fs.mkdir(path.join(__dirname,'manOlder25'),err => {
     if (err) {
         console.log(err);
-        return;
+        return err;
     }
     fs.mkdir(path.join(__dirname, 'manYounger25'), err => {
         if (err) {
             console.log(err);
-            return;
+            return err;
         }
         fs.mkdir(path.join(__dirname, 'womanOlder25'), err => {
             if (err) {
                 console.log(err);
-                return;
+                return err;
             }
             fs.mkdir(path.join(__dirname, 'womanYounger25'), err=> {
                 if (err) {
@@ -45,30 +45,41 @@ function creator(users){
             fs.writeFile(path.join(__dirname,'manYounger25',`${user.name}.txt`),
                 `${JSON.stringify(user)}`,err => {
                     console.log(err);
-                    return err;
+                    if (err) {
+                        console.log(err);
+                        return err;
+                    }
                 })}
 
         if (user.age < 25 && user.gender === 'female'){
             fs.writeFile(path.join(__dirname,'womanYounger25',`${user.name}.txt`),
                 `${JSON.stringify(user)}`,err => {
-                    console.log(err);
-                    return err;
+                    if (err) {
+                        console.log(err);
+                        return err;
+                    }
                 })}
 
         if (user.age >= 25 && user.gender === 'male'){
             fs.writeFile(path.join(__dirname,'manOlder25',`${user.name}.txt`),
                 `${JSON.stringify(user)}`,err => {
                     console.log(err);
-                    return err;
+                    if (err) {
+                        console.log(err);
+                        return err;
+                    }
                 })}
 
         if (user.age >= 25 && user.gender === 'female'){
             fs.writeFile(path.join(__dirname,'womanOlder25',`${user.name}.txt`),
                 `${JSON.stringify(user)}`,err => {
                     console.log(err);
-                    return err;
+                    if (err) {
+                        console.log(err);
+                        return err;
+                    }
                 })}
     });
 }
 
-creator(users)
+creator(users);
