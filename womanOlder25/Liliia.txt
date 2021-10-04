@@ -1,1 +1,0 @@
-{"name":"Liliia","gender":"female","age":25}

@@ -1,5 +1,6 @@
 const fs =require('fs');
 const path = require('path');
+
 const users=[
     {name:"Julia",gender:"female",age:30},
     {name:"Vasiliy",gender:"male",age:24},
@@ -14,45 +15,58 @@ const users=[
 ];
 
 fs.mkdir(path.join(__dirname,'manOlder25'),err => {
-    console.log(err);}
-);
-
-fs.mkdir(path.join(__dirname,'manYounger25'),err => {
-    console.log(err);}
-);
-
-fs.mkdir(path.join(__dirname,'womanOlder25'),err => {
-    console.log(err);}
-);
-
-fs.mkdir(path.join(__dirname,'womanYounger25'),err => {
-    console.log(err);}
-);
-
-function creator(value){
-    value.forEach(value=>{
-        if (value.age < 25 && value.gender === 'male'){
-            fs.writeFile(path.join(__dirname,'manYounger25',`${value.name}.txt`),
-                `${JSON.stringify(value)}`,err => {
+    if (err) {
+        console.log(err);
+        return;
+    }
+    fs.mkdir(path.join(__dirname, 'manYounger25'), err => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        fs.mkdir(path.join(__dirname, 'womanOlder25'), err => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            fs.mkdir(path.join(__dirname, 'womanYounger25'), err=> {
+                if (err) {
                     console.log(err);
+                    return err;
+                }
+            });
+        });
+    });
+});
+
+function creator(users){
+    users.forEach(user=>{
+        if (user.age < 25 && user.gender === 'male'){
+            fs.writeFile(path.join(__dirname,'manYounger25',`${user.name}.txt`),
+                `${JSON.stringify(user)}`,err => {
+                    console.log(err);
+                    return err;
                 })}
 
-        if (value.age < 25 && value.gender === 'female'){
-            fs.writeFile(path.join(__dirname,'womanYounger25',`${value.name}.txt`),
-                `${JSON.stringify(value)}`,err => {
+        if (user.age < 25 && user.gender === 'female'){
+            fs.writeFile(path.join(__dirname,'womanYounger25',`${user.name}.txt`),
+                `${JSON.stringify(user)}`,err => {
                     console.log(err);
+                    return err;
                 })}
 
-        if (value.age >= 25 && value.gender === 'male'){
-            fs.writeFile(path.join(__dirname,'manOlder25',`${value.name}.txt`),
-                `${JSON.stringify(value)}`,err => {
+        if (user.age >= 25 && user.gender === 'male'){
+            fs.writeFile(path.join(__dirname,'manOlder25',`${user.name}.txt`),
+                `${JSON.stringify(user)}`,err => {
                     console.log(err);
+                    return err;
                 })}
 
-        if (value.age >= 25 && value.gender === 'female'){
-            fs.writeFile(path.join(__dirname,'womanOlder25',`${value.name}.txt`),
-                `${JSON.stringify(value)}`,err => {
+        if (user.age >= 25 && user.gender === 'female'){
+            fs.writeFile(path.join(__dirname,'womanOlder25',`${user.name}.txt`),
+                `${JSON.stringify(user)}`,err => {
                     console.log(err);
+                    return err;
                 })}
     });
 }
