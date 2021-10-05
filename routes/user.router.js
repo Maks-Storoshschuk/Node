@@ -4,10 +4,10 @@ const userController = require('../controllers/user.controller');
 
 router.get('/',userController.getUsers);
 
+router.get('/:user_id',userController.getUsersById);
+
 router.post('/',userController.createUser);
 
-router.put('/',userController.updateUser);
-
-router.delete('/',userController.deleteUser);
+router.delete('/:user_id',userController.deleteUser);
 
 module.exports = router;
