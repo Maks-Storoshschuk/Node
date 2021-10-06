@@ -1,10 +1,11 @@
 const express= require('express');
 
+const userRouter = require('./routes/user.router');
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-const userRouter = require('./routes/user.router');
 
 app.use('/users',userRouter);
 
