@@ -13,9 +13,9 @@ module.exports = {
     getUsersById: async (req, res) => {
         try {
             const {user_id} = req.params;
-            const id = user_id - 1
-            const user = await read();
-            res.json(user[id]);
+            const users = await read();
+            const user = users.filter(users => users.id === +user_id);
+            res.json(user);
         } catch (e) {
             console.log(e);
         }
