@@ -27,12 +27,12 @@ async function deleteUser(id) {
 async function addUser(user) {
     const users = await read();
 
-    const userId = []
+    const userId = [];
     users.forEach(users=>{
-        userId.push(users.id)
-    })
+        userId.push(users.id);
+    });
 
-    userId.sort(compareNumbers)
+    userId.sort(compareNumbers);
     const id =userId[userId.length - 1] + 1;
 
     users.push({...user,id});

@@ -1,4 +1,4 @@
-const {read,deleteUser,addUser} = require('../users/user.function')
+const {read,deleteUser,addUser} = require('../users/user.function');
 
 module.exports = {
     getUsers: async (req, res) => {
@@ -39,4 +39,4 @@ module.exports = {
             console.log(e);
         }
     }
-}
+};
