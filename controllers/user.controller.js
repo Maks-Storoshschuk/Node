@@ -1,42 +1,51 @@
-const {read,deleteUser,addUser} = require('../users/user.function');
+const User = require('../dataBase/User');
 
 module.exports = {
     getUsers: async (req, res) => {
         try {
-            const allUsers = await read();
-            res.json(allUsers);
+            const users = await User.find();
+
+            res.json(users);
         } catch (e) {
-            console.log(e);
+            res.json(e);
         }
     },
 
     getUsersById: async (req, res) => {
         try {
             const {user_id} = req.params;
-            const users = await read();
-            const user = users.filter(users => users.id === +user_id);
+            const user = await User.findById(user_id);
             res.json(user);
         } catch (e) {
-            console.log(e);
+            res.json(e);
         }
     },
 
     createUser: async (req, res) => {
         try {
-            const newUsers = await addUser(req.body);
-            res.json(newUsers);
+            const user =await User.create(req.body);
+            res.json(user);
         } catch (e) {
-            console.log(e);
+            res.json(e);
+        }
+    },
+
+    auth: async (req, res) => {
+        try {
+            await User.create(req.body);
+            res.json(req.body);
+        } catch (e) {
+            res.json(e);
         }
     },
 
     deleteUser: async (req, res) => {
         try {
             const {user_id} = req.params;
-            const usersWithout = await deleteUser(user_id);
-            res.json(usersWithout);
+            const user = await User.findByIdAndDelete(user_id);
+            res.json(user);
         } catch (e) {
-            console.log(e);
+            res.json(e);
         }
     }
 };
