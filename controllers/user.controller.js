@@ -7,7 +7,7 @@ module.exports = {
 
             res.json(users);
         } catch (e) {
-            res.json(e);
+            res.json(e.message);
         }
     },
 
@@ -17,25 +17,16 @@ module.exports = {
             const user = await User.findById(user_id);
             res.json(user);
         } catch (e) {
-            res.json(e);
+            res.json(e.message);
         }
     },
 
     createUser: async (req, res) => {
         try {
-            const user =await User.create(req.body);
+            const user = await User.create(req.body);
             res.json(user);
         } catch (e) {
-            res.json(e);
-        }
-    },
-
-    auth: async (req, res) => {
-        try {
-            await User.create(req.body);
-            res.json(req.body);
-        } catch (e) {
-            res.json(e);
+            res.json(e.message);
         }
     },
 

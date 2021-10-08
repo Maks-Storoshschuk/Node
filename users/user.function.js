@@ -28,18 +28,18 @@ async function addUser(user) {
     const users = await read();
 
     const userId = [];
-    users.forEach(users=>{
+    users.forEach(users => {
         userId.push(users.id);
     });
 
     userId.sort(compareNumbers);
-    const id =userId[userId.length - 1] + 1;
+    const id = userId[userId.length - 1] + 1;
 
-    users.push({...user,id});
+    users.push({...user, id});
 
-    await fs.writeFile(dir,JSON.stringify(users));
+    await fs.writeFile(dir, JSON.stringify(users));
 
     return users;
 }
 
-module.exports = {read,addUser,deleteUser};
+module.exports = {read, addUser, deleteUser};

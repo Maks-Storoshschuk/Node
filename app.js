@@ -1,4 +1,4 @@
-const express= require('express');
+const express = require('express');
 const mongoose = require('mongoose');
 
 const {MongoConnectUrl, PORT} = require('./config/config');
@@ -9,11 +9,11 @@ const app = express();
 mongoose.connect(MongoConnectUrl);
 
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({extended: true}));
 
-app.use('/users',userRouter);
+app.use('/users', userRouter);
 
-app.listen(PORT,()=>{
-    console.log('app listen',PORT);
+app.listen(PORT, () => {
+    console.log('app listen', PORT);
 });
 

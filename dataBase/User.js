@@ -1,30 +1,31 @@
-const { Schema, model } = require('mongoose');
+const {Schema, model} = require('mongoose');
 
-const userRoles=require ('../config/constans');
+const userRoles = require('../config/constans');
 
 const userSchema = new Schema({
-    name:{
+    name: {
         type: String,
         trim: true,
         required: false,
         unique: true,
     },
-    email:{
+    email: {
         type: String,
         trim: true,
         unique: true,
         required: true
     },
-    role:{
+    role: {
         type: String,
         default: userRoles.USER,
         enum: Object.values(userRoles)
     },
-    password:{
+    password: {
         type: String,
-        trim:true,
-        required: true
-    }
-}, {timestamps: true });
+        trim: true,
+        required: true,
+        unique: true
+    },
+}, {timestamps: true});
 
-module.exports = model('user',userSchema);
+module.exports = model('user', userSchema);
