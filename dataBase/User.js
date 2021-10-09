@@ -6,8 +6,6 @@ const userSchema = new Schema({
     name: {
         type: String,
         trim: true,
-        required: false,
-        unique: true,
     },
     email: {
         type: String,
@@ -24,7 +22,6 @@ const userSchema = new Schema({
         type: String,
         trim: true,
         required: true,
-        unique: true
     },
 }, {timestamps: true});
 
