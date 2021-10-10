@@ -4,17 +4,14 @@ module.exports = {
     logInMiddleware: async (req, res, next) => {
         try {
             const {email, password} = req.body;
-            const checkEmail = await User.findOne({email});
+            const checkEmailAndPassword = await User.findOne({email, password});
 
-            if (!checkEmail) {
+            if (!checkEmailAndPassword) {
                 throw new Error('Wrong email or password');
             }
 
-            const checkPassword = await User.findOne({email}).findOne({password});
-
-            if (!checkPassword) {
-                throw new Error('Wrong email or password');
-            }
+            req.user=checkEmailAndPassword;
+            res.json(req.user);
 
             next();
         } catch (e) {

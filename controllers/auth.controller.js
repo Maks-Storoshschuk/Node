@@ -7,11 +7,8 @@ module.exports = {
             const user = await User.findOne({email});
 
             res.json(user);
-
         } catch (e) {
-
             res.json(e.message);
-
         }
     }
 };
