@@ -11,7 +11,6 @@ module.exports = {
             }
 
             req.user=checkEmailAndPassword;
-            res.json(req.user);
 
             next();
         } catch (e) {
