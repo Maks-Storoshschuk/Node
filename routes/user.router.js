@@ -10,6 +10,7 @@ router.get('/', userController.getUsers);
 router.post('/', userMiddleware.createUserMiddleware, userController.createUser);
 
 router.get('/:user_id', userIdMiddleware.userIdMiddleware, userController.getUsersById);
+router.post('/:user_id', userIdMiddleware.userIdMiddleware, userController.updateUser);
 router.delete('/:user_id', userIdMiddleware.userIdMiddleware, userController.deleteUser);
 router.post('/auth', logInMiddleware.logInMiddleware, authController.auth);
 

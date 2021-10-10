@@ -15,6 +15,18 @@ module.exports = {
         res.json(req.user);
     },
 
+    updateUser: async (req, res) => {
+        try {
+            const {user_id} = req.params;
+            const freshUser = req.body;
+            const user = await User.findByIdAndUpdate(user_id , freshUser, {new:true});
+
+            res.json(user);
+        } catch (e) {
+            res.json(e.message);
+        }
+    },
+
     createUser: async (req, res) => {
         try {
             const user = await User.create(req.body);
