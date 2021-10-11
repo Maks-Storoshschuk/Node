@@ -47,7 +47,7 @@ module.exports = {
             const user = await User
                 .create({...req.body, password: hashPassword});
 
-            const normUser = userUtil.userNormalize(user);
+            const normUser = userUtil.userNormalize(user.toObject());
             res.json(normUser);
         } catch (e) {
             res.json(e.message);
