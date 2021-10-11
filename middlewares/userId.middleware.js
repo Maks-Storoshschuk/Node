@@ -21,6 +21,12 @@ module.exports = {
     },
     updateValid: (req, res, next) => {
         try {
+            const {email, password} = req.body;
+
+            if (email || password){
+                throw new Error('you cant change email or password');
+            }
+
             const {error, value} = updateValidator.updateValidator.validate(req.body);
 
             if (error) {
