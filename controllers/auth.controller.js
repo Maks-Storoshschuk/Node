@@ -1,5 +1,9 @@
+const userUtil = require('../util/user.util');
+
 module.exports = {
     auth: (req, res) => {
-        res.json(req.user);
+        const user = userUtil.userNormalize(req.user);
+
+        res.json(user);
     }
 };
