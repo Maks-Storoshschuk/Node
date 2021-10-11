@@ -1,20 +1,12 @@
 const User = require('../dataBase/User');
-const userValidator = require('../validators/user.validator');
+const userValidator = require('../dependencies/user.validator');
 
 module.exports = {
     createUserMiddleware: async (req, res, next) => {
         try {
-            const {name, email, password} = req.body;
+            const {email} = req.body;
 
-            if (!name || !email || !password) {
-                throw new Error('some field are empty');
-            }
-
-            if (!email.includes('@')) {
-                throw new Error('not valid email');
-            }
-
-            const userByEmail = await User.findOne({email: req.body.email});
+            const userByEmail = await User.findOne({email});
 
             if (userByEmail) {
                 throw new Error('Email already exists');

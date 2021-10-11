@@ -44,7 +44,8 @@ module.exports = {
         try {
             const hashPassword = await passwordService.hash(req.body.password);
 
-            const user = await User.create({...req.body, password: hashPassword});
+            const user = await User
+                .create({...req.body, password: hashPassword});
 
             const normUser = userUtil.userNormalize(user);
             res.json(normUser);
@@ -57,9 +58,10 @@ module.exports = {
     deleteUser: async (req, res) => {
         try {
             const {user_id} = req.params;
-            const user = await User.findByIdAndDelete(user_id);
+            const user = await User.findByIdAndDelete(user_id).lean();
+            const newUser = userUtil.userNormalize(user);
 
-            res.json(user);
+            res.json(newUser);
         } catch (e) {
             res.json(e.message);
         }

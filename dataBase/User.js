@@ -1,6 +1,6 @@
 const {Schema, model} = require('mongoose');
 
-const userRoles = require('../config/constans');
+const {USER, ADMIN, MANAGER} = require('../config/constans');
 
 const userSchema = new Schema({
     name: {
@@ -15,8 +15,8 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        default: userRoles.USER,
-        enum: Object.values(userRoles)
+        default: USER,
+        enum: {ADMIN, USER, MANAGER}
     },
     password: {
         type: String,

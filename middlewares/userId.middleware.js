@@ -1,5 +1,5 @@
 const User = require('../dataBase/User');
-const updateValidator = require('../validators/update.validator');
+const updateValidator = require('../dependencies/update.validator');
 
 
 module.exports = {
@@ -21,12 +21,6 @@ module.exports = {
     },
     updateValid: (req, res, next) => {
         try {
-            const {email, password, role} = req.body;
-
-            if (email || password || role) {
-                throw new Error('you cant change email or password');
-            }
-
             const {error, value} = updateValidator.updateValidator.validate(req.body);
 
             if (error) {

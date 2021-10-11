@@ -1,5 +1,5 @@
 const User = require('../dataBase/User');
-const authValidator = require('../validators/auth.validator');
+const authValidator = require('../dependencies/auth.validator');
 const passwordService = require('../services/password.service');
 
 module.exports = {
@@ -8,14 +8,13 @@ module.exports = {
             const {email, password} = req.body;
             const checkEmailAndPassword = await User
                 .findOne({email})
-                .lean()
-                .select('+password');
-
-            await passwordService.compare(password, checkEmailAndPassword.password);
+                .lean();
 
             if (!checkEmailAndPassword) {
                 throw new Error('Wrong email or password');
             }
+
+            await passwordService.compare(password, checkEmailAndPassword.password);
 
             req.user = checkEmailAndPassword;
 
@@ -29,7 +28,7 @@ module.exports = {
             const {error, value} = authValidator.authValidator.validate(req.body);
 
             if (error) {
-                throw new Error(error.details[0].message);
+                throw new Error('wrong email or password');
             }
 
             req.body = value;
