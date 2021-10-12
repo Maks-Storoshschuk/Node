@@ -10,8 +10,6 @@ module.exports = {
         } catch (e) {
             next(e);
         }
-
-
     },
 
     logOut: async (req, res, next) => {
