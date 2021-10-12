@@ -12,6 +12,7 @@ module.exports = {
             if (userByEmail) {
                 throw new ErrorHandler('Email already exists', 400);
             }
+
             next();
         } catch (e) {
             next(e);
