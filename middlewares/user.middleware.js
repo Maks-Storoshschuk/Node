@@ -1,5 +1,5 @@
 const User = require('../dataBase/User');
-const userValidator = require('../dependencies/user.validator');
+const userValidator = require('../validators/user.validator');
 
 module.exports = {
     createUserMiddleware: async (req, res, next) => {

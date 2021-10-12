@@ -1,5 +1,5 @@
 const User = require('../dataBase/User');
-const authValidator = require('../dependencies/auth.validator');
+const authValidator = require('../validators/auth.validator');
 const passwordService = require('../services/password.service');
 
 module.exports = {

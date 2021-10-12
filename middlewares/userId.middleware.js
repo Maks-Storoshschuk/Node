@@ -1,5 +1,5 @@
 const User = require('../dataBase/User');
-const updateValidator = require('../dependencies/update.validator');
+const updateValidator = require('../validators/update.validator');
 
 
 module.exports = {
