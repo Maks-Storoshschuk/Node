@@ -1,5 +1,6 @@
 const User = require('../dataBase/User');
-const updateValidator = require('../dependencies/update.validator');
+const {updateValidator} = require('../dependencies');
+const ErrorHandler = require('../errorHandler/errorHandler');
 
 
 module.exports = {
@@ -9,14 +10,14 @@ module.exports = {
             const checkId = await User.findById(user_id).lean();
 
             if (!checkId) {
-                throw new Error('Wrong id');
+                throw new ErrorHandler('Wrong id', 404);
             }
 
             req.user = checkId;
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -25,14 +26,14 @@ module.exports = {
             const {error, value} = updateValidator.updateValidator.validate(req.body);
 
             if (error) {
-                throw new Error(error.details[0].message);
+                throw new ErrorHandler('Bad request', 400);
             }
 
             req.body = value;
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     }
 };

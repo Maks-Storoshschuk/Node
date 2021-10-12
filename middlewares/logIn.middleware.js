@@ -1,42 +1,69 @@
 const User = require('../dataBase/User');
-const authValidator = require('../dependencies/auth.validator');
+const {authValidator} = require('../dependencies');
 const passwordService = require('../services/password.service');
+const ErrorHandler = require('../errorHandler/errorHandler');
 
 module.exports = {
-    logInMiddleware: async (req, res, next) => {
-        try {
-            const {email, password} = req.body;
-            const checkEmailAndPassword = await User
-                .findOne({email})
-                .lean();
-
-            if (!checkEmailAndPassword) {
-                throw new Error('Wrong email or password');
-            }
-
-            await passwordService.compare(password, checkEmailAndPassword.password);
-
-            req.user = checkEmailAndPassword;
-
-            next();
-        } catch (e) {
-            res.json(e.message);
-        }
-    },
-
     isAuthValid: (req, res, next) => {
         try {
             const {error, value} = authValidator.authValidator.validate(req.body);
 
             if (error) {
-                throw new Error('wrong email or password');
+                throw new ErrorHandler('Invalid email or password', 404);
             }
 
             req.body = value;
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
+        }
+    },
+
+    logInMiddleware: async (req, res, next) => {
+        try {
+            const {email} = req.body;
+            const checkEmail = await User
+                .findOne({email})
+                .lean();
+
+            if (!checkEmail) {
+                throw new ErrorHandler('Wrong email or password', 404);
+            }
+
+            req.user = checkEmail;
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkPasswordMiddleware: async (req, res, next) => {
+        try {
+            const {password} = req.body;
+            const {password: hashPassword} = req.user;
+
+            await passwordService.compare(password, hashPassword);
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkUserRole: (roleArr = []) => (req, res, next) => {
+        try {
+            const {role} = req.user;
+
+            if (!roleArr.includes(role)) {
+                throw new ErrorHandler('Access denied', 404);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
         }
     }
+
 };

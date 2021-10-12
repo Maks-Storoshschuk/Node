@@ -1,5 +1,6 @@
 const User = require('../dataBase/User');
-const userValidator = require('../dependencies/user.validator');
+const {userValidator} = require('../dependencies');
+const ErrorHandler = require('../errorHandler/errorHandler');
 
 module.exports = {
     createUserMiddleware: async (req, res, next) => {
@@ -9,11 +10,11 @@ module.exports = {
             const userByEmail = await User.findOne({email});
 
             if (userByEmail) {
-                throw new Error('Email already exists');
+                throw new ErrorHandler('Email already exists', 400);
             }
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -22,14 +23,14 @@ module.exports = {
             const {error, value} = userValidator.createUserValidator.validate(req.body);
 
             if (error) {
-                throw new Error(error.details[0].message);
+                throw new ErrorHandler('Invalid data', 400);
             }
 
             req.body = value;
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     }
 };

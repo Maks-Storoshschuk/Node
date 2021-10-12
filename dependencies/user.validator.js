@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const {emailRegExp, passwordRegExp, USER, ADMIN, MANAGER} = require('../config/constans');
+const {constants, regExp} = require('../config');
 
 const createUserValidator = Joi.object({
     name: Joi
@@ -12,16 +12,16 @@ const createUserValidator = Joi.object({
         .required(),
     email: Joi
         .string()
-        .regex(emailRegExp)
+        .regex(regExp.emailRegExp)
         .trim()
         .required(),
     role: Joi
         .string()
-        .allow(USER, ADMIN, MANAGER),
+        .allow(constants.valueOf()),
     password: Joi
         .string()
         .trim()
-        .allow(passwordRegExp)
+        .allow(regExp.passwordRegExp)
         .required(),
 });
 
