@@ -23,6 +23,7 @@ module.exports = {
             res.json(e.message);
         }
     },
+
     isAuthValid: (req, res, next) => {
         try {
             const {error, value} = authValidator.authValidator.validate(req.body);

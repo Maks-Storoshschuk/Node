@@ -19,6 +19,7 @@ module.exports = {
             res.json(e.message);
         }
     },
+
     updateValid: (req, res, next) => {
         try {
             const {error, value} = updateValidator.updateValidator.validate(req.body);
