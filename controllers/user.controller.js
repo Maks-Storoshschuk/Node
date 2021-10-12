@@ -39,6 +39,7 @@ module.exports = {
             const user = await User.findByIdAndUpdate(user_id, freshUser, {new: true}).lean();
 
             const newUser = userUtil.userNormalize(user);
+
             res.json(newUser);
         } catch (e) {
             next(e);
