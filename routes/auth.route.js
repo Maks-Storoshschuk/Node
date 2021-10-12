@@ -20,7 +20,6 @@ router.post(
     logInMiddleware.checkPasswordMiddleware,
     authController.logIn
 );
-
 router.post(
     '/logOut',
     authController.logOut
