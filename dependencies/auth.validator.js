@@ -11,7 +11,7 @@ const authValidator = Joi.object({
     password: Joi
         .string()
         .trim()
-        .allow(passwordRegExp)
+        .regex(passwordRegExp)
         .required()
 });
 
