@@ -66,6 +66,7 @@ module.exports = {
         try {
             const {user_id} = req.params;
             const user = await User.findByIdAndDelete(user_id).lean();
+
             const newUser = userUtil.userNormalize(user);
 
             res.json(newUser);
