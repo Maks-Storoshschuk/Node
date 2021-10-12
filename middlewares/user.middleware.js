@@ -1,5 +1,5 @@
 const User = require('../dataBase/User');
-const {userValidator} = require('../dependencies');
+const {userValidator} = require('../validators');
 const ErrorHandler = require('../errorHandler/errorHandler');
 
 module.exports = {

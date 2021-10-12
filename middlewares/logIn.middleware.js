@@ -1,5 +1,5 @@
 const User = require('../dataBase/User');
-const {authValidator} = require('../dependencies');
+const {authValidator} = require('../validators');
 const passwordService = require('../services/password.service');
 const ErrorHandler = require('../errorHandler/errorHandler');
 
