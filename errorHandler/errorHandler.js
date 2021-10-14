@@ -7,4 +7,9 @@ class ErrorHandler extends Error {
     }
 }
 
-module.exports = ErrorHandler;
+function ErrorBuilder(cod) {
+    const {message, code} = cod;
+    throw new ErrorHandler(message, code);
+}
+
+module.exports = ErrorBuilder;

@@ -1,6 +1,6 @@
 const User = require('../dataBase/User');
 const {updateValidator} = require('../validators');
-const ErrorHandler = require('../errorHandler/errorHandler');
+const {Errors, ErrorBuilder} = require("../errorHandler");
 
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
             const checkId = await User.findById(user_id).lean();
 
             if (!checkId) {
-                throw new ErrorHandler('Wrong id', 404);
+                ErrorBuilder(Errors.err400);
             }
 
             req.user = checkId;
@@ -26,7 +26,7 @@ module.exports = {
             const {error, value} = updateValidator.updateValidator.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler('Bad request', 400);
+                ErrorBuilder(Errors.err400BR);
             }
 
             req.body = value;

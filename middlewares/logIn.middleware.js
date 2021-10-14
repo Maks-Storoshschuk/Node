@@ -1,7 +1,7 @@
 const User = require('../dataBase/User');
 const {authValidator} = require('../validators');
 const passwordService = require('../services/password.service');
-const ErrorHandler = require('../errorHandler/errorHandler');
+const {ErrorBuilder, Errors} = require('../errorHandler');
 
 module.exports = {
     isAuthValid: (req, res, next) => {
@@ -9,7 +9,7 @@ module.exports = {
             const {error, value} = authValidator.authValidator.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler('Invalid email or password', 404);
+                ErrorBuilder(Errors.err422);
             }
 
             req.body = value;
@@ -28,7 +28,7 @@ module.exports = {
                 .lean();
 
             if (!checkEmail) {
-                throw new ErrorHandler('Wrong email or password', 404);
+                ErrorBuilder(Errors.err404);
             }
 
             req.user = checkEmail;
@@ -57,7 +57,7 @@ module.exports = {
             const {role} = req.user;
 
             if (!roleArr.includes(role)) {
-                throw new ErrorHandler('Access denied', 404);
+                ErrorBuilder(Errors.err403);
             }
 
             next();
