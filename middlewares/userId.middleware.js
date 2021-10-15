@@ -1,7 +1,6 @@
 const User = require('../dataBase/User');
 const {updateValidator} = require('../validators');
-const {Errors, ErrorBuilder} = require("../errorHandler");
-
+const {Errors, ErrorBuilder} = require('../errorHandler');
 
 module.exports = {
     userIdMiddleware: async (req, res, next) => {
@@ -10,7 +9,7 @@ module.exports = {
             const checkId = await User.findById(user_id).lean();
 
             if (!checkId) {
-                ErrorBuilder(Errors.err400);
+                ErrorBuilder(Errors.err404WI);
             }
 
             req.user = checkId;

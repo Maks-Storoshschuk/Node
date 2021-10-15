@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const {config} = require('./config');
 const {userRouter, authRouter} = require('./routes');
+const {Errors} = require('./errorHandler');
 
 const app = express();
 
@@ -18,9 +19,9 @@ app.use('/auth', authRouter);
 // eslint-disable-next-line no-unused-vars
 app.use('*', (err, req, res, next) => {
     res
-        .status(err.status || 404)
+        .status(err.status || Errors.err500.code)
         .json({
-            message: err.message
+            message: err.message || Errors.err500.message
         });
 });
 

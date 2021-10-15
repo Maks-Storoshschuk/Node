@@ -27,5 +27,4 @@ router.post(
     authController.logOut
 );
 
-
 module.exports = router;
