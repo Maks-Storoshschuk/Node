@@ -27,7 +27,7 @@ router.put(
     userController.updateUser
 );
 router.delete(
-    '/',
+    '/:user_id',
     logInMiddleware.checkAccessToken,
     userController.deleteAccount
 );

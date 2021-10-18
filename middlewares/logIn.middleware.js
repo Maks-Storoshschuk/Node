@@ -86,6 +86,7 @@ module.exports = {
                 ErrorBuilder(Errors.err401);
             }
 
+            req.token = token;
             req.user = userUtil.userNormalize(tokenResponse.user_id.toObject());
 
             next();
@@ -109,8 +110,6 @@ module.exports = {
             if (!tokenResponse) {
                 ErrorBuilder(Errors.err401);
             }
-
-            await O_auth.remove({refresh_token: token});
 
             req.user = tokenResponse.user_id;
 

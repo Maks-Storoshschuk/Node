@@ -8,16 +8,10 @@ router.post(
     '/',
     logInMiddleware.isAuthValid,
     logInMiddleware.logInMiddleware,
-    logInMiddleware.checkUserRole(constants.USER),
-    logInMiddleware.checkPasswordMiddleware,
-    authController.logIn
-);
-
-router.post(
-    '/admin',
-    logInMiddleware.isAuthValid,
-    logInMiddleware.logInMiddleware,
-    logInMiddleware.checkUserRole(constants.ADMIN),
+    logInMiddleware.checkUserRole([
+        constants.USER,
+        constants.ADMIN
+    ]),
     logInMiddleware.checkPasswordMiddleware,
     authController.logIn
 );
@@ -31,7 +25,7 @@ router.post(
 router.post(
     '/refresh',
     logInMiddleware.checkRefreshToken,
-    authController.logIn
+    authController.refreshToken,
 );
 
 module.exports = router;

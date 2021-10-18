@@ -2,7 +2,6 @@ const User = require('../dataBase/User');
 const passwordService = require('../services/password.service');
 const userUtil = require('../util/user.util');
 
-
 module.exports = {
     getUsers: async (req, res, next) => {
         try {
@@ -40,7 +39,7 @@ module.exports = {
 
             const newUser = userUtil.userNormalize(user);
 
-            res.json(newUser);
+            res.status(201).json(newUser);
         } catch (e) {
             next(e);
         }
@@ -55,7 +54,7 @@ module.exports = {
 
             const normUser = userUtil.userNormalize(user.toObject());
 
-            res.json(normUser);
+            res.status(201).json(normUser);
         } catch (e) {
             next(e);
 
@@ -67,7 +66,7 @@ module.exports = {
             const id = req.user._id;
             await User.findByIdAndDelete(id);
 
-            res.json('User is dead');
+            res.sendStatus(204);
         } catch (e) {
             next(e);
         }
