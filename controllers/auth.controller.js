@@ -1,12 +1,25 @@
 const userUtil = require('../util/user.util');
-const User = require('../dataBase/User');
+const {jwtService} = require('../services');
+const oAuth = require('../dataBase/O_auth');
+const {AUTHORIZATION} = require('../config/regExp');
+const {Errors, ErrorBuilder} = require('../errorHandler');
 
 module.exports = {
-    logIn: (req, res, next) => {
+    logIn: async (req, res, next) => {
         try {
+            const tokenPair = jwtService.generateTokenPair();
+
             const user = userUtil.userNormalize(req.user);
 
-            res.json(user);
+            await oAuth.create({
+                ...tokenPair,
+                user_id: user._id
+            });
+
+            res.json({
+                user,
+                ...tokenPair
+            });
         } catch (e) {
             next(e);
         }
@@ -14,9 +27,17 @@ module.exports = {
 
     logOut: async (req, res, next) => {
         try {
-            const users = await User.find();
+            const token = req.get(AUTHORIZATION);
 
-            res.json(users);
+            if (!token) {
+                ErrorBuilder(Errors.err401);
+            }
+
+            await jwtService.verifyToken(token);
+
+            await oAuth.findOneAndDelete({access_token: token});
+
+            res.json('log in');
         } catch (e) {
             next(e);
         }

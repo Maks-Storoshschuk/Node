@@ -62,14 +62,12 @@ module.exports = {
         }
     },
 
-    deleteUser: async (req, res, next) => {
+    deleteAccount: async (req, res, next) => {
         try {
-            const {user_id} = req.params;
-            const user = await User.findByIdAndDelete(user_id).lean();
+            const id = req.user._id;
+            await User.findByIdAndDelete(id);
 
-            const newUser = userUtil.userNormalize(user);
-
-            res.json(newUser);
+            res.json('User is dead');
         } catch (e) {
             next(e);
         }

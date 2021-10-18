@@ -24,7 +24,14 @@ router.post(
 
 router.post(
     '/logOut',
+    logInMiddleware.checkAccessToken,
     authController.logOut
+);
+
+router.post(
+    '/refresh',
+    logInMiddleware.checkRefreshToken,
+    authController.logIn
 );
 
 module.exports = router;
