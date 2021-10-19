@@ -1,6 +1,7 @@
 const User = require('../dataBase/User');
 const {userValidator} = require('../validators');
 const {ErrorBuilder, Errors} = require('../errorHandler');
+const {constants} = require('../config');
 
 module.exports = {
     createUserMiddleware: async (req, res, next) => {
@@ -24,7 +25,10 @@ module.exports = {
             const {error, value} = userValidator.createUserValidator.validate(req.body);
 
             if (error) {
-                ErrorBuilder(Errors.err422ID);
+                next({
+                    message: error.details[0].message,
+                    status: constants.code400
+                });
             }
 
             req.body = value;

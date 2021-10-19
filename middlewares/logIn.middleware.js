@@ -111,7 +111,7 @@ module.exports = {
                 ErrorBuilder(Errors.err401);
             }
 
-            req.user = tokenResponse.user_id;
+            req.user = tokenResponse;
 
             next();
         } catch (e) {
