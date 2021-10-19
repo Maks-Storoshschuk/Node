@@ -1,6 +1,16 @@
+const EmailTemplate = require('email-templates');
 const nodemailer = require('nodemailer');
+const path = require('path');
 
 const {NO_REPLY_EMAIL, NO_REPLY_EMAIL_PASSWORD} = require('../config/config');
+const allTemplates = require('../emails');
+const {ErrorBuilder, Errors} = require('../errorHandler');
+
+const templateParser = new EmailTemplate({
+    view: {
+        root: path.join(process.cwd(), 'emails')
+    }
+});
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -10,13 +20,22 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// eslint-disable-next-line require-await
-const sendMail = async (userMail) => transporter.sendMail({
-    from: 'Na reply',
-    to: userMail,
-    subject: 'Hello World',
-    html: 'HELLO WORLD!!!'
-});
+const sendMail = async (userMail, emailAction) => {
+    const templateInfo = allTemplates[emailAction];
+
+    if (!templateInfo) {
+        ErrorBuilder(Errors.err409WT);
+    }
+
+    const html = await templateParser.render(templateInfo.templateName);
+
+    return transporter.sendMail({
+        from: 'Na reply',
+        to: userMail,
+        subject: templateInfo.subject,
+        html
+    });
+};
 
 module.exports = {
     sendMail

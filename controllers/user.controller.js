@@ -50,7 +50,7 @@ module.exports = {
         try {
             const hashPassword = await passwordService.hash(req.body.password);
 
-            await emailService.sendMail(req.body.email);
+            await emailService.sendMail(req.body.email,'welcome');
 
             const user = await User
                 .create({...req.body, password: hashPassword});
