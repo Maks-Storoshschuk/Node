@@ -38,7 +38,7 @@ module.exports = {
     refreshToken: async (req, res, next) => {
         try {
             const {refresh_token} = req.user;
-            await oAuth.remove({refresh_token});
+            await oAuth.deleteOne({refresh_token});
 
             res.json('refresh token are deleted');
         } catch (e) {
