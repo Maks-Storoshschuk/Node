@@ -1,6 +1,6 @@
-const userUtil = require('../util/user.util');
 const {jwtService} = require('../services');
 const oAuth = require('../dataBase/O_auth');
+const userUtil = require('../util/user.util');
 
 module.exports = {
     logIn: async (req, res, next) => {
@@ -37,7 +37,7 @@ module.exports = {
 
     refreshToken: async (req, res, next) => {
         try {
-            const {refresh_token,user_id} = req.user;
+            const {refresh_token, user_id} = req.user;
 
             await oAuth.deleteOne({refresh_token});
 

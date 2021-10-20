@@ -1,6 +1,6 @@
+const {Errors, ErrorBuilder} = require('../errorHandler');
 const User = require('../dataBase/User');
 const {updateValidator} = require('../validators');
-const {Errors, ErrorBuilder} = require('../errorHandler');
 
 module.exports = {
     userIdMiddleware: async (req, res, next) => {

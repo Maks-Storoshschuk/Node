@@ -17,7 +17,11 @@ const createUserValidator = Joi.object({
         .required(),
     role: Joi
         .string()
-        .allow(constants.valueOf()),
+        .allow(
+            constants.USER,
+            constants.ADMIN,
+            constants.MANAGER
+        ),
     password: Joi
         .string()
         .trim()

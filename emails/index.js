@@ -8,7 +8,7 @@ module.exports = {
         subject: 'Cool!!!'
     },
     userBlocked: {
-        templateName: 'Ban',
+        templateName: 'ban',
         subject: 'Ban'
     }
 };

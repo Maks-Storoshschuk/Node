@@ -1,7 +1,7 @@
-const User = require('../dataBase/User');
-const {passwordService,emailService} = require('../services');
-const userUtil = require('../util/user.util');
 const {constants} = require('../config');
+const {passwordService, emailService} = require('../services');
+const userUtil = require('../util/user.util');
+const User = require('../dataBase/User');
 
 module.exports = {
     getUsers: async (req, res, next) => {
@@ -50,7 +50,7 @@ module.exports = {
         try {
             const hashPassword = await passwordService.hash(req.body.password);
 
-            await emailService.sendMail(req.body.email,'welcome');
+            await emailService.sendMail(req.body.email, constants.welcome, {userName: req.body.name});
 
             const user = await User
                 .create({...req.body, password: hashPassword});

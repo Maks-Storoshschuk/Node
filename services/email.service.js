@@ -2,9 +2,9 @@ const EmailTemplate = require('email-templates');
 const nodemailer = require('nodemailer');
 const path = require('path');
 
-const {NO_REPLY_EMAIL, NO_REPLY_EMAIL_PASSWORD} = require('../config/config');
 const allTemplates = require('../emails');
 const {ErrorBuilder, Errors} = require('../errorHandler');
+const {NO_REPLY_EMAIL, NO_REPLY_EMAIL_PASSWORD} = require('../config/config');
 
 const templateParser = new EmailTemplate({
     view: {
@@ -20,14 +20,14 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-const sendMail = async (userMail, emailAction) => {
+const sendMail = async (userMail, emailAction, context = {}) => {
     const templateInfo = allTemplates[emailAction];
 
     if (!templateInfo) {
         ErrorBuilder(Errors.err409WT);
     }
 
-    const html = await templateParser.render(templateInfo.templateName);
+    const html = await templateParser.render(templateInfo.templateName, context);
 
     return transporter.sendMail({
         from: 'Na reply',

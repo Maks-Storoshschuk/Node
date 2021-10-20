@@ -1,11 +1,11 @@
-const User = require('../dataBase/User');
 const {authValidator} = require('../validators');
-const {passwordService, jwtService} = require('../services');
-const {ErrorBuilder, Errors} = require('../errorHandler');
 const {AUTHORIZATION} = require('../config/regExp');
-const {tokenTypeEnum} = require('../config');
+const {ErrorBuilder, Errors} = require('../errorHandler');
 const O_auth = require('../dataBase/O_auth');
+const {passwordService, jwtService} = require('../services');
+const {tokenTypeEnum} = require('../config');
 const userUtil = require('../util/user.util');
+const User = require('../dataBase/User');
 
 module.exports = {
     isAuthValid: (req, res, next) => {

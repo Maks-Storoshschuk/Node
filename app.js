@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 const {config} = require('./config');
-const {userRouter, authRouter} = require('./routes');
 const {Errors} = require('./errorHandler');
+const {userRouter, authRouter} = require('./routes');
 
 const app = express();
 
