@@ -1,6 +1,6 @@
 const {constants} = require('../config');
 const {ErrorBuilder, Errors} = require('../errorHandler');
-const User = require('../dataBase/User');
+const {User} = require('../dataBase');
 const {userValidator} = require('../validators');
 
 module.exports = {
@@ -37,7 +37,21 @@ module.exports = {
         } catch (e) {
             next(e);
         }
-    }
+    },
+
+    isUserActive: (req, res, next) => {
+        try {
+            const {user} = req;
+
+            if (!user.is_active) {
+                ErrorBuilder(Errors.err403NA);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
 };
 
 

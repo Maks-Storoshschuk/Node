@@ -1,6 +1,7 @@
 const {jwtService} = require('../services');
-const oAuth = require('../dataBase/O_auth');
+const {O_auth, User} = require('../dataBase');
 const userUtil = require('../util/user.util');
+const {constants} = require('../config');
 
 module.exports = {
     logIn: async (req, res, next) => {
@@ -9,7 +10,7 @@ module.exports = {
 
             const user = userUtil.userNormalize(req.user);
 
-            await oAuth.create({
+            await O_auth.create({
                 ...tokenPair,
                 user_id: user._id
             });
@@ -27,7 +28,7 @@ module.exports = {
         try {
             const token = req.token;
 
-            await oAuth.findOneAndDelete({access_token: token});
+            await O_auth.findOneAndDelete({access_token: token});
 
             res.json('log in');
         } catch (e) {
@@ -39,17 +40,29 @@ module.exports = {
         try {
             const {refresh_token, user_id} = req.user;
 
-            await oAuth.deleteOne({refresh_token});
+            await O_auth.deleteOne({refresh_token});
 
             const tokenPair = jwtService.generateTokenPair();
 
-            await oAuth.create({
+            await O_auth.create({
                 ...tokenPair,
                 user_id
             });
 
             res.json(tokenPair);
         } catch (e) {
+            next(e);
+        }
+    },
+
+    activate: async (req, res, next) => {
+        try {
+            const {_id} = req.user;
+            await User.updateOne({_id},{is_active:true});
+
+            res.status(constants.code200)
+                .json('User is active');
+        } catch (e){
             next(e);
         }
     }

@@ -1,7 +1,8 @@
-const {constants} = require('../config');
+const {constants, tokenTypeEnum} = require('../config');
+const {jwtService} = require('../services');
 const {passwordService, emailService} = require('../services');
 const userUtil = require('../util/user.util');
-const User = require('../dataBase/User');
+const {User, Action} = require('../dataBase');
 
 module.exports = {
     getUsers: async (req, res, next) => {
@@ -50,12 +51,15 @@ module.exports = {
         try {
             const hashPassword = await passwordService.hash(req.body.password);
 
-            await emailService.sendMail(req.body.email, constants.welcome, {userName: req.body.name});
-
-            const user = await User
-                .create({...req.body, password: hashPassword});
+            const user = await User.create({...req.body, password: hashPassword});
 
             const normUser = userUtil.userNormalize(user.toObject());
+
+            const token = jwtService.createActionToken();
+
+            await Action.create({token, type: tokenTypeEnum.ACTION, user_id: user._id});
+
+            await emailService.sendMail(req.body.email, constants.welcome, {userName: req.body.name, token});
 
             res.status(constants.code201).json(normUser);
         } catch (e) {

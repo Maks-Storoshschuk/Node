@@ -16,6 +16,12 @@ router.post(
     authController.logIn
 );
 
+router.get(
+    '/activate/:token',
+    logInMiddleware.checkActivateToken,
+    authController.activate
+);
+
 router.post(
     '/logOut',
     logInMiddleware.checkAccessToken,

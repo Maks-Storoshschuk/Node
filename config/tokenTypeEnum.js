@@ -1,4 +1,5 @@
 module.exports = {
     ACCESS: 'access',
-    REFRESH: 'refresh'
+    REFRESH: 'refresh',
+    ACTION: 'action'
 };

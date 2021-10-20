@@ -3,15 +3,18 @@ const router = require('express').Router();
 const {userController} = require('../controllers');
 const {userMiddleware, logInMiddleware, userIdMiddleware} = require('../middlewares');
 
-router.get(
-    '/',
-    userController.getUsers
-);
 router.post(
     '/',
     userMiddleware.isUserValid,
     userMiddleware.createUserMiddleware,
     userController.createUser
+);
+
+router.use(logInMiddleware.checkAccessToken,userMiddleware.isUserActive);
+
+router.get(
+    '/',
+    userController.getUsers
 );
 
 router.get(

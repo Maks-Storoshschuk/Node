@@ -6,6 +6,7 @@ module.exports = {
     code201: 201,
     code204: 204,
     code400: 400,
+    code200: 200,
 
     welcome: 'welcome',
     orderConfirmed: 'order.confirmed',
