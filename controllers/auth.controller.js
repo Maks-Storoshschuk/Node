@@ -28,7 +28,7 @@ module.exports = {
         try {
             const token = req.token;
 
-            await O_auth.findOneAndDelete({access_token: token});
+            await O_auth.deleteOne({access_token: token});
 
             res.json('log in');
         } catch (e) {

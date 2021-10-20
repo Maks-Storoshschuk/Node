@@ -24,8 +24,8 @@ router.get(
 );
 router.put(
     '/:user_id',
-    logInMiddleware.checkAccessToken,
     userIdMiddleware.updateValid,
+    logInMiddleware.checkAccessToken,
     userIdMiddleware.userIdMiddleware,
     userController.updateUser
 );

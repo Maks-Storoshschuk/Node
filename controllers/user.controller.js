@@ -2,7 +2,7 @@ const {constants, tokenTypeEnum} = require('../config');
 const {jwtService} = require('../services');
 const {passwordService, emailService} = require('../services');
 const userUtil = require('../util/user.util');
-const {User, Action} = require('../dataBase');
+const {User, Action, O_auth} = require('../dataBase');
 
 module.exports = {
     getUsers: async (req, res, next) => {
@@ -71,7 +71,8 @@ module.exports = {
     deleteAccount: async (req, res, next) => {
         try {
             const id = req.user._id;
-            await User.findByIdAndDelete(id);
+            await User.deleteOne(id);
+            await O_auth.deleteOne({user_id:id});
 
             res.sendStatus(constants.code204);
         } catch (e) {
