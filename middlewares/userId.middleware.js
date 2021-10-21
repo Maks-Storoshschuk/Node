@@ -6,7 +6,7 @@ module.exports = {
     userIdMiddleware: async (req, res, next) => {
         try {
             const {user_id} = req.params;
-            const checkId = await User.findById(user_id).lean();
+            const checkId = await User.findById(user_id);
 
             if (!checkId) {
                 ErrorBuilder(Errors.err404WI);

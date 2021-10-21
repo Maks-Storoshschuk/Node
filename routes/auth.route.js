@@ -12,7 +12,6 @@ router.post(
         constants.USER,
         constants.ADMIN
     ]),
-    logInMiddleware.checkPasswordMiddleware,
     authController.logIn
 );
 

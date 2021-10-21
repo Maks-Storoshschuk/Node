@@ -2,9 +2,8 @@ const {authValidator} = require('../validators');
 const {AUTHORIZATION} = require('../config/regExp');
 const {ErrorBuilder, Errors} = require('../errorHandler');
 const {O_auth, User, Action} = require('../dataBase');
-const {passwordService, jwtService} = require('../services');
+const {jwtService} = require('../services');
 const {tokenTypeEnum} = require('../config');
-const userUtil = require('../util/user.util');
 
 module.exports = {
     isAuthValid: (req, res, next) => {
@@ -27,27 +26,13 @@ module.exports = {
         try {
             const {email} = req.body;
             const checkEmail = await User
-                .findOne({email})
-                .lean();
+                .findOne({email});
 
             if (!checkEmail) {
                 ErrorBuilder(Errors.err404);
             }
 
             req.user = checkEmail;
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    checkPasswordMiddleware: async (req, res, next) => {
-        try {
-            const {password} = req.body;
-            const {password: hashPassword} = req.user;
-
-            await passwordService.compare(password, hashPassword);
 
             next();
         } catch (e) {
@@ -79,14 +64,14 @@ module.exports = {
 
             await jwtService.verifyToken(token);
 
-            const tokenResponse = await O_auth.findOne({access_token: token}).populate('user_id');
+            const tokenResponse = await O_auth.findOne({access_token: token});
 
             if (!tokenResponse) {
                 ErrorBuilder(Errors.err401);
             }
 
             req.token = token;
-            req.user = userUtil.userNormalize(tokenResponse.user_id.toObject());
+            req.user = tokenResponse.user_id.userNormalizer(tokenResponse.user_id);
 
             next();
         } catch (e) {
@@ -104,7 +89,7 @@ module.exports = {
 
             await jwtService.verifyToken(token, tokenTypeEnum.REFRESH);
 
-            const tokenResponse = await O_auth.findOne({refresh_token: token}).populate('user_id');
+            const tokenResponse = await O_auth.findOne({refresh_token: token});
 
             if (!tokenResponse) {
                 ErrorBuilder(Errors.err401);

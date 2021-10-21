@@ -1,17 +1,16 @@
 const {constants, tokenTypeEnum} = require('../config');
 const {jwtService} = require('../services');
-const {passwordService, emailService} = require('../services');
-const userUtil = require('../util/user.util');
+const {emailService} = require('../services');
 const {User, Action, O_auth} = require('../dataBase');
 
 module.exports = {
     getUsers: async (req, res, next) => {
         try {
-            const users = await User.find().lean();
+            const users = await User.find();
 
             const normUsers = [];
             users.forEach(user => {
-                const normUser = userUtil.userNormalize(user);
+                const normUser = user.userNormalizer(user);
 
                 normUsers.push(normUser);
             });
@@ -24,9 +23,11 @@ module.exports = {
 
     getUsersById: (req, res, next) => {
         try {
-            const user = userUtil.userNormalize(req.user);
+            const user = req.user;
 
-            res.json(user);
+            const normUser = user.userNormalizer(user);
+
+            res.json(normUser);
         } catch (e) {
             next(e);
         }
@@ -37,9 +38,9 @@ module.exports = {
         try {
             const {user_id} = req.params;
             const freshUser = req.body;
-            const user = await User.findByIdAndUpdate(user_id, freshUser, {new: true}).lean();
+            const user = await User.findByIdAndUpdate(user_id, freshUser, {new: true});
 
-            const newUser = userUtil.userNormalize(user);
+            const newUser = user.userNormalizer(user);
 
             res.status(constants.code201).json(newUser);
         } catch (e) {
@@ -49,11 +50,11 @@ module.exports = {
 
     createUser: async (req, res, next) => {
         try {
-            const hashPassword = await passwordService.hash(req.body.password);
 
-            const user = await User.create({...req.body, password: hashPassword});
 
-            const normUser = userUtil.userNormalize(user.toObject());
+            const user = await User.createUserWithHashPassword(req.body);
+
+            const normUser = user.userNormalizer(user);
 
             const token = jwtService.createActionToken();
 
@@ -72,7 +73,7 @@ module.exports = {
         try {
             const id = req.user._id;
             await User.deleteOne(id);
-            await O_auth.deleteOne({user_id:id});
+            await O_auth.deleteOne({user_id: id});
 
             res.sendStatus(constants.code204);
         } catch (e) {

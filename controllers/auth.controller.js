@@ -1,6 +1,5 @@
 const {jwtService} = require('../services');
 const {O_auth, User} = require('../dataBase');
-const userUtil = require('../util/user.util');
 const {constants} = require('../config');
 
 module.exports = {
@@ -8,15 +7,19 @@ module.exports = {
         try {
             const tokenPair = jwtService.generateTokenPair();
 
-            const user = userUtil.userNormalize(req.user);
+            const user = req.user;
+            const {password} = req.body;
+            await user.comparePassword(password);
 
             await O_auth.create({
                 ...tokenPair,
                 user_id: user._id
             });
 
+            const normUser = user.userNormalizer(user);
+
             res.json({
-                user,
+                normUser,
                 ...tokenPair
             });
         } catch (e) {
@@ -58,11 +61,11 @@ module.exports = {
     activate: async (req, res, next) => {
         try {
             const {_id} = req.user;
-            await User.updateOne({_id},{is_active:true});
+            await User.updateOne({_id}, {is_active: true});
 
             res.status(constants.code200)
                 .json('User is active');
-        } catch (e){
+        } catch (e) {
             next(e);
         }
     }
