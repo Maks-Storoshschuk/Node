@@ -10,5 +10,9 @@ module.exports = {
     userBlocked: {
         templateName: 'ban',
         subject: 'Ban'
+    },
+    forgotPassword: {
+        templateName: 'forgotPassword',
+        subject: 'Dont worry'
     }
 };

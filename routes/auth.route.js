@@ -33,4 +33,16 @@ router.post(
     authController.refreshToken,
 );
 
+router.post(
+    '/password/forgot',
+    authController.sendMailForgotPassword
+);
+
+router.post(
+    '/password/forgot/set',
+    logInMiddleware.isNewPasswordValid,
+    logInMiddleware.checkNewData,
+    authController.setNewPassword
+);
+
 module.exports = router;

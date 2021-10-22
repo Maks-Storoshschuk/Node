@@ -1,9 +1,10 @@
-const {authValidator} = require('../validators');
+const {Action_Forgot} = require("../dataBase");
+const {authValidator, newPasswordValidator} = require('../validators');
 const {AUTHORIZATION} = require('../config/regExp');
 const {ErrorBuilder, Errors} = require('../errorHandler');
 const {O_auth, User, Action} = require('../dataBase');
 const {jwtService} = require('../services');
-const {tokenTypeEnum} = require('../config');
+const {tokenTypeEnum, regExp} = require('../config');
 
 module.exports = {
     isAuthValid: (req, res, next) => {
@@ -116,6 +117,49 @@ module.exports = {
 
             await Action.deleteOne({_id});
             req.user = user;
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    isNewPasswordValid: (req, res, next) => {
+        try {
+            const {newPassword} = req.body;
+            const {error, value} = newPasswordValidator.newPasswordValidator.validate({newPassword});
+
+            if (error) {
+                ErrorBuilder(Errors.err422);
+            }
+
+            req.body = value;
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkNewData: async (req, res, next) => {
+        try {
+            const actionToken = req.get(regExp.AUTHORIZATION);
+
+            const {newPassword} = req.body;
+
+            if (!actionToken || !newPassword) {
+                ErrorBuilder(Errors.err401);
+            }
+
+            await jwtService.verifyToken(actionToken, tokenTypeEnum.ACTION_FORGOT);
+
+            const checkAT = await Action_Forgot.findOne({token: actionToken});
+
+            if (!checkAT) {
+                ErrorBuilder(Errors.err401);
+            }
+
+            req.body = {actionToken, newPassword};
 
             next();
         } catch (e) {

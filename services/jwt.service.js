@@ -1,7 +1,12 @@
 const jwt = require('jsonwebtoken');
 
 const {ErrorBuilder, Errors} = require('../errorHandler');
-const {JWT_ACCESS_SECRET, JWT_REFRESH_SECRET, JWT_ACTION_SECRET} = require('../config/config');
+const {
+    JWT_ACCESS_SECRET,
+    JWT_REFRESH_SECRET,
+    JWT_ACTION_SECRET,
+    JWT_ACTION_FORGOT_SECRET
+} = require('../config/config');
 const {tokenTypeEnum} = require('../config');
 
 module.exports = {
@@ -28,6 +33,9 @@ module.exports = {
                 case tokenTypeEnum.ACTION:
                     secret = JWT_ACTION_SECRET;
                     break;
+                case tokenTypeEnum.ACTION_FORGOT:
+                    secret = JWT_ACTION_FORGOT_SECRET;
+                    break;
             }
 
             await jwt.verify(token, secret);
@@ -35,5 +43,22 @@ module.exports = {
             ErrorBuilder(Errors.err401);
         }
     },
-    createActionToken: () => jwt.sign({}, JWT_ACTION_SECRET, {expiresIn: '1d'})
+    createActionToken: (type) => {
+        let SECRET;
+        switch (type) {
+
+            case tokenTypeEnum.ACTION:
+                SECRET = JWT_ACTION_SECRET;
+                break;
+
+            case tokenTypeEnum.ACTION_FORGOT:
+                SECRET = JWT_ACTION_FORGOT_SECRET;
+                break;
+
+            default:
+                ErrorBuilder(Errors.err500);
+
+        }
+        return jwt.sign({}, SECRET, {expiresIn: '1d'});
+    }
 };

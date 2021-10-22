@@ -10,5 +10,6 @@ module.exports = {
 
     welcome: 'welcome',
     orderConfirmed: 'order.confirmed',
-    ban: 'ban'
+    ban: 'ban',
+    FORGOT_PASSWORD: 'forgotPassword'
 };

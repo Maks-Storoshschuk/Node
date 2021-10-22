@@ -50,13 +50,11 @@ module.exports = {
 
     createUser: async (req, res, next) => {
         try {
-
-
             const user = await User.createUserWithHashPassword(req.body);
 
             const normUser = user.userNormalizer(user);
 
-            const token = jwtService.createActionToken();
+            const token = jwtService.createActionToken(tokenTypeEnum.ACTION);
 
             await Action.create({token, type: tokenTypeEnum.ACTION, user_id: user._id});
 
