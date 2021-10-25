@@ -1,4 +1,5 @@
 module.exports = {
+    err290: {message: 'CORS is not allowed', code: 290},
     err400BR: {message: 'Bad request', code: 400},
     err401: {message: 'Invalid token', code: 401},
     err403: {message: 'Access denied', code: 403},

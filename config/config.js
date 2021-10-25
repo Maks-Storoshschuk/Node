@@ -1,4 +1,6 @@
 module.exports = {
+    NODE_ENV: process.env.NODE_ENV || 'dev',
+
     MongoConnectUrl: process.env.MongoConnectUrl || 'mongodb://localhost:27017/MongooseDB',
     PORT: process.env.PORT || 5000,
 
@@ -8,5 +10,7 @@ module.exports = {
     JWT_ACTION_FORGOT_SECRET: process.env.JWT_REFRESH_SECRET || 'nice_weather',
 
     NO_REPLY_EMAIL: process.env.NO_REPLY_EMAIL,
-    NO_REPLY_EMAIL_PASSWORD: process.env.NO_REPLY_EMAIL_PASSWORD
+    NO_REPLY_EMAIL_PASSWORD: process.env.NO_REPLY_EMAIL_PASSWORD,
+
+    ALLOWED_ORIGIN: process.env.ALLOWED_ORIGIN || 'http://localhost:3000'
 };
