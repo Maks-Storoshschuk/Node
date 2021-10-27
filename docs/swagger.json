@@ -471,14 +471,14 @@
             "description": "OK",
             "schema": {
               "type": "string",
-              "example": "ok"
+              "example": "new password are saved"
             }
           },
-          "404": {
-            "description": "Wrong email or password"
+          "401": {
+            "description": "Invalid token"
           },
-          "409": {
-            "description": "Wrong template name"
+          "422": {
+            "description": "Invalid email or password"
           },
           "500": {
             "description": "Internal Server Error"
