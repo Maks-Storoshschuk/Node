@@ -1,4 +1,4 @@
-const {Action_Forgot} = require("../dataBase");
+const {Action_Forgot} = require('../dataBase');
 const {authValidator, newPasswordValidator} = require('../validators');
 const {AUTHORIZATION} = require('../config/regExp');
 const {ErrorBuilder, Errors} = require('../errorHandler');
@@ -9,13 +9,26 @@ const {tokenTypeEnum, regExp} = require('../config');
 module.exports = {
     isAuthValid: (req, res, next) => {
         try {
-            const {error, value} = authValidator.authValidator.validate(req.body);
+            const {newPassword, password, email} = req.body;
 
-            if (error) {
-                ErrorBuilder(Errors.err422);
+            if (newPassword) {
+                const {error, value} = newPasswordValidator.newPasswordValidator.validate({newPassword});
+
+                if (error) {
+                    ErrorBuilder(Errors.err422);
+                }
+
+                req.body = value;
             }
+            if (password && email) {
+                const {error, value} = authValidator.authValidator.validate({password, email});
 
-            req.body = value;
+                if (error) {
+                    ErrorBuilder(Errors.err422);
+                }
+
+                req.body = value;
+            }
 
             next();
         } catch (e) {
@@ -124,42 +137,23 @@ module.exports = {
         }
     },
 
-    isNewPasswordValid: (req, res, next) => {
-        try {
-            const {newPassword} = req.body;
-            const {error, value} = newPasswordValidator.newPasswordValidator.validate({newPassword});
-
-            if (error) {
-                ErrorBuilder(Errors.err422);
-            }
-
-            req.body = value;
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
     checkNewData: async (req, res, next) => {
         try {
             const actionToken = req.get(regExp.AUTHORIZATION);
 
             const {newPassword} = req.body;
 
-            if (!actionToken || !newPassword) {
-                ErrorBuilder(Errors.err401);
-            }
-
             await jwtService.verifyToken(actionToken, tokenTypeEnum.ACTION_FORGOT);
 
             const checkAT = await Action_Forgot.findOne({token: actionToken});
+
+            const {user_id} = checkAT;
 
             if (!checkAT) {
                 ErrorBuilder(Errors.err401);
             }
 
-            req.body = {actionToken, newPassword};
+            req.body = {actionToken, newPassword, user_id};
 
             next();
         } catch (e) {

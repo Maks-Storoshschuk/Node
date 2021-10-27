@@ -3,6 +3,4 @@ module.exports = {
     REFRESH: 'refresh',
     ACTION_FORGOT: 'action_forgot',
     ACTION: 'action'
-
-
 };
