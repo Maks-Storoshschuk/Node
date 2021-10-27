@@ -39,6 +39,38 @@
             "default": 20,
             "required": false,
             "type": "number"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "default": "name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "age.gte",
+            "in": "query",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "age.lte",
+            "in": "query",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "required": false,
+            "type": "number",
+            "default": "user;admin"
           }
         ],
         "responses": {
