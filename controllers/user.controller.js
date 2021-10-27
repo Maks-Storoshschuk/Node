@@ -1,12 +1,13 @@
 const {constants, tokenTypeEnum} = require('../config');
 const {jwtService} = require('../services');
 const {emailService} = require('../services');
+const userService = require('../services/user.service');
 const {User, Action, O_auth} = require('../dataBase');
 
 module.exports = {
     getUsers: async (req, res, next) => {
         try {
-            const users = await User.find();
+            const users = await userService.getAllUsers(req.query);
 
             const normUsers = [];
             users.forEach(user => {

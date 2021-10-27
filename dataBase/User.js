@@ -14,6 +14,9 @@ const userSchema = new Schema({
         unique: true,
         required: true
     },
+    age: {
+        type: Number,
+    },
     role: {
         type: String,
         default: constants.USER,
