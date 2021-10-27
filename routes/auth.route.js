@@ -35,12 +35,13 @@ router.post(
 
 router.post(
     '/password/forgot',
+    logInMiddleware.logInMiddleware,
     authController.sendMailForgotPassword
 );
 
-router.post(
-    '/password/forgot/set',
-    logInMiddleware.isNewPasswordValid,
+router.put(
+    '/password/forgot',
+    logInMiddleware.isAuthValid,
     logInMiddleware.checkNewData,
     authController.setNewPassword
 );

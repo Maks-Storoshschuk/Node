@@ -25,13 +25,11 @@ router.get(
 router.put(
     '/:user_id',
     userIdMiddleware.updateValid,
-    logInMiddleware.checkAccessToken,
     userIdMiddleware.userIdMiddleware,
     userController.updateUser
 );
 router.delete(
     '/:user_id',
-    logInMiddleware.checkAccessToken,
     userController.deleteAccount
 );
 

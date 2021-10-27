@@ -65,8 +65,7 @@ module.exports = {
             const {_id} = req.user;
             await User.updateOne({_id}, {is_active: true});
 
-            res.status(constants.code200)
-                .json('User is active');
+            res.status.json('User is active');
         } catch (e) {
             next(e);
         }
@@ -100,17 +99,16 @@ module.exports = {
 
     setNewPassword: async (req, res, next) => {
         try {
-            const {newPassword, actionToken} = req.body;
+            const {newPassword, actionToken, user_id} = req.body;
             const hashedPassword = await passwordService.hash(newPassword);
 
             await User.updateOne({actionToken}, {password: hashedPassword});
 
-            await O_auth.deleteMany({actionToken});
+            await O_auth.deleteMany({user_id});
 
             await Action_Forgot.deleteMany({actionToken});
 
-            res.status(constants.code200)
-                .json('new password are saved');
+            res.status.json('new password are saved');
         } catch (e) {
             next(e);
         }

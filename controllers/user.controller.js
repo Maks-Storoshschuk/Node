@@ -69,9 +69,9 @@ module.exports = {
 
     deleteAccount: async (req, res, next) => {
         try {
-            const id = req.user._id;
-            await User.deleteOne(id);
-            await O_auth.deleteOne({user_id: id});
+            const {user_id} = req.params;
+            await User.deleteOne({_id: user_id});
+            await O_auth.deleteOne({user_id});
 
             res.sendStatus(constants.code204);
         } catch (e) {
