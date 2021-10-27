@@ -101,7 +101,7 @@ module.exports = {
 
             await Action_Forgot.deleteMany({actionToken});
 
-            res.status.json('new password are saved');
+            res.json('new password are saved');
         } catch (e) {
             next(e);
         }
