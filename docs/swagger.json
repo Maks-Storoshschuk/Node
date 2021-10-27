@@ -411,7 +411,7 @@
     "/auth/password/forgot": {
       "post": {
         "tags": [
-          "Password"
+          "Forgot password"
         ],
         "operationId": "create action token",
         "description": "This is how send email with action token for creating new password",
@@ -434,6 +434,51 @@
           },
           "404": {
             "description": "Wrong email or password"
+          },
+          "409": {
+            "description": "Wrong template name"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Forgot password"
+        ],
+        "operationId": "set password",
+        "description": "This is how to set new password",
+        "parameters": [
+          {
+            "name": "newPassword",
+            "in": "formData",
+            "default": "newPass123",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "default": "",
+            "required": true,
+            "type": "string",
+            "description": "this is `action_token` from path in email"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "example": "ok"
+            }
+          },
+          "404": {
+            "description": "Wrong email or password"
+          },
+          "409": {
+            "description": "Wrong template name"
           },
           "500": {
             "description": "Internal Server Error"
