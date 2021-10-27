@@ -92,14 +92,14 @@ module.exports = {
 
     setNewPassword: async (req, res, next) => {
         try {
-            const {newPassword, actionToken, user_id} = req.body;
+            const {newPassword, user_id} = req.body;
             const hashedPassword = await passwordService.hash(newPassword);
 
-            await User.updateOne({actionToken}, {password: hashedPassword});
+            await User.updateOne({_id:user_id}, {password: hashedPassword});
 
             await O_auth.deleteMany({user_id});
 
-            await Action_Forgot.deleteMany({actionToken});
+            await Action_Forgot.deleteMany({user_id});
 
             res.json('new password are saved');
         } catch (e) {

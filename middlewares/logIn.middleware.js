@@ -152,7 +152,7 @@ module.exports = {
             }
             const {user_id} = checkAT;
 
-            req.body = {actionToken, newPassword, user_id};
+            req.body = {newPassword, user_id};
 
             next();
         } catch (e) {
