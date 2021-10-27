@@ -41,7 +41,6 @@ router.post(
 
 router.put(
     '/password/forgot',
-
     logInMiddleware.isAuthValid,
     logInMiddleware.checkNewData,
     authController.setNewPassword
