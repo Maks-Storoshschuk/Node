@@ -1,8 +1,6 @@
 const {jwtService, emailService, passwordService} = require('../services');
 const {O_auth, User, Action_Forgot} = require('../dataBase');
 const {constants, tokenTypeEnum} = require('../config');
-const {Errors, ErrorBuilder} = require('../errorHandler');
-
 
 module.exports = {
     logIn: async (req, res, next) => {
@@ -73,13 +71,6 @@ module.exports = {
 
     sendMailForgotPassword: async (req, res, next) => {
         try {
-            const {email} = req.body;
-            const user = await User.findOne({email});
-
-            if (!user) {
-                ErrorBuilder(Errors.err404);
-            }
-
             const actionToken = jwtService.createActionToken(tokenTypeEnum.ACTION_FORGOT);
 
             await Action_Forgot.create({
