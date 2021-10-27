@@ -71,7 +71,7 @@ module.exports = {
 
     sendMailForgotPassword: async (req, res, next) => {
         try {
-            const {_id} = req.user;
+            const {_id, email} = req.user;
             const actionToken = jwtService.createActionToken(tokenTypeEnum.ACTION_FORGOT);
 
             await Action_Forgot.create({
