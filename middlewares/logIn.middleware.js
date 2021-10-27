@@ -147,11 +147,10 @@ module.exports = {
 
             const checkAT = await Action_Forgot.findOne({token: actionToken});
 
-            const {user_id} = checkAT;
-
             if (!checkAT) {
                 ErrorBuilder(Errors.err401);
             }
+            const {user_id} = checkAT;
 
             req.body = {actionToken, newPassword, user_id};
 

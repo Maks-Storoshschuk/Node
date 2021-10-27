@@ -71,12 +71,14 @@ module.exports = {
 
     sendMailForgotPassword: async (req, res, next) => {
         try {
+            const{_id,email} = req.user;
+
             const actionToken = jwtService.createActionToken(tokenTypeEnum.ACTION_FORGOT);
 
             await Action_Forgot.create({
                 token: actionToken,
                 type: tokenTypeEnum.ACTION_FORGOT,
-                user_id: user._id,
+                user_id: _id,
 
             });
 
@@ -99,7 +101,7 @@ module.exports = {
 
             await Action_Forgot.deleteMany({actionToken});
 
-            res.status.json('new password are saved');
+            res.json('new password are saved');
         } catch (e) {
             next(e);
         }
