@@ -1,22 +1,24 @@
-const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
-const rateLimit = require('express-rate-limit');
+const express = require('express');
 const helmet = require('helmet');
+const mongoose = require('mongoose');
+const rateLimit = require('express-rate-limit');
+const swagerUi = require('swagger-ui-express');
 require('dotenv').config();
 
-const startCron = require('./cron');
 const {config} = require('./config');
-const {Errors, ErrorBuilder} = require('./errorHandler');
-const {userRouter, authRouter} = require('./routes');
 const createAdmin = require('./util/default-data.util');
+const {Errors, ErrorBuilder} = require('./errorHandler');
+const startCron = require('./cron');
+const swaggerJson = require('./docs/swagger.json');
+const {userRouter, authRouter} = require('./routes');
 
 const app = express();
 
 mongoose.connect(config.MongoConnectUrl);
 
-app.use(helmet());
 app.use(cors({origin: _configureCors}));
+app.use(helmet());
 app.use(rateLimit({
     widowMs: 15 * 60 * 1000,
     max: 100
@@ -31,8 +33,9 @@ if (config.NODE_ENV === 'dev') {
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.use('/users', userRouter);
 app.use('/auth', authRouter);
+app.use('/docs', swagerUi.serve, swagerUi.setup(swaggerJson));
+app.use('/users', userRouter);
 // eslint-disable-next-line no-unused-vars
 app.use('*', (err, req, res, next) => {
     res

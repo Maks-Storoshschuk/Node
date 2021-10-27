@@ -1,0 +1,495 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Node",
+    "version": "1.0",
+    "description": "studying Node",
+    "contact": {
+      "email": "maksstoroschuk@gmail.com",
+      "name": "Maks"
+    }
+  },
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "getAllUsers",
+        "description": "This is how to get all users",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "default": "",
+            "required": true,
+            "type": "string",
+            "description": "this is `access_token` from POST /auth endpoint"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "default": 1,
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "perPage",
+            "in": "query",
+            "default": 20,
+            "required": false,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/singleUser"
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token"
+          },
+          "403": {
+            "description": "User is not active"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "createUser",
+        "description": "This is how to create new user",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "formData",
+            "default": "Maks",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "default": "example@example.com",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "default": "example123",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/singleUser"
+            }
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "409": {
+            "description": "Email already exists"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "delete": {
+        "tags": [
+          "UsersId"
+        ],
+        "operationId": "deleteUser",
+        "description": "This is how to delete user",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "default": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "default": "",
+            "required": true,
+            "type": "string",
+            "description": "this is `access_token` from POST /auth endpoint"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Invalid token"
+          },
+          "403": {
+            "description": "User is not active"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "UsersId"
+        ],
+        "operationId": "updateUser",
+        "description": "This is how to update user name",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "default": "61780ade7b5dd2e0e745e0a6",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "default": "",
+            "required": true,
+            "type": "string",
+            "description": "this is `access_token` from POST /auth endpoint"
+          },
+          {
+            "name": "name",
+            "in": "formData",
+            "default": "",
+            "required": true,
+            "type": "string",
+            "description": "new user name"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/singleUser"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Invalid token"
+          },
+          "403": {
+            "description": "User is not active"
+          },
+          "404": {
+            "description": "Wrong id"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "UsersId"
+        ],
+        "operationId": "getUsersById",
+        "description": "This is how to get one user by id",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "default": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "default": "",
+            "required": true,
+            "type": "string",
+            "description": "this is `access_token` from POST /auth endpoint"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/singleUser"
+            }
+          },
+          "401": {
+            "description": "Invalid token"
+          },
+          "403": {
+            "description": "User is not active"
+          },
+          "404": {
+            "description": "Wrong id"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "logIn",
+        "description": "This is how to log in",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "formData",
+            "default": "example@example.com",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "default": "example123",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "normUser": {
+                  "$ref": "#/definitions/singleUser"
+                },
+                "access_token": {
+                  "type": "string",
+                  "description": "Access token"
+                },
+                "refresh_token": {
+                  "type": "string",
+                  "description": "Refresh token"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied"
+          },
+          "404": {
+            "description": "Wrong email or password"
+          },
+          "422": {
+            "description": "Invalid email or password"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/logOut": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "logOut",
+        "description": "This is how to log out",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "formData",
+            "default": "example@example.com",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "default": "example123",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "normUser": {
+                  "$ref": "#/definitions/singleUser"
+                },
+                "access_token": {
+                  "type": "string",
+                  "description": "Access token"
+                },
+                "refresh_token": {
+                  "type": "string",
+                  "description": "Refresh token"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied"
+          },
+          "404": {
+            "description": "Wrong email or password"
+          },
+          "422": {
+            "description": "Invalid email or password"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "refresh tokens",
+        "description": "This is how to refresh tokens",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "default": "",
+            "required": true,
+            "type": "string",
+            "description": "this is `refresh_token` from POST /auth endpoint"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "access_token": {
+                  "type": "string",
+                  "description": "Access token"
+                },
+                "refresh_token": {
+                  "type": "string",
+                  "description": "Refresh token"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/password/forgot": {
+      "post": {
+        "tags": [
+          "Password"
+        ],
+        "operationId": "create action token",
+        "description": "This is how send email with action token for creating new password",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "formData",
+            "default": "example@example.com",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "example": "ok"
+            }
+          },
+          "404": {
+            "description": "Wrong email or password"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "singleUser": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Name",
+          "description": "User name"
+        },
+        "email": {
+          "type": "string",
+          "example": "example@example.com",
+          "description": "User email"
+        },
+        "role": {
+          "type": "string",
+          "example": "user",
+          "description": "User role"
+        },
+        "is_active": {
+          "type": "boolean",
+          "description": "is user active?"
+        },
+        "_id": {
+          "type": "string",
+          "example": "zz7zzz7zzz7zzz7zzz7zzz",
+          "description": "MongoDbId"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2020-02-20T20:20:20.453Z",
+          "description": "when user account create"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2020-02-20T20:20:20.453Z",
+          "description": "when user account update"
+        },
+        "fullName": {
+          "type": "string",
+          "example": "user name role hello!"
+        },
+        "id": {
+          "type": "string",
+          "example": "zz7zzz7zzz7zzz7zzz7zzz",
+          "description": "MongoDbId"
+        }
+      }
+    }
+  }
+}
