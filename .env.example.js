@@ -13,3 +13,8 @@ NO_REPLY_EMAIL=
 NO_REPLY_EMAIL_PASSWORD=
 
 ALLOWED_ORIGIN=http://localhost:3000;http://localhost:4200
+
+AWS_S3_REGION=us-east-1
+AWS_S3_NAME=maks-bucket-node
+AWS_S3_ACCESS_KEY=
+AWS_S3_SECRET_KEY=

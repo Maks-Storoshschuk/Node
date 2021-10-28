@@ -19,7 +19,7 @@ module.exports = {
     uploadImage: (file = {}, itemType, itemId) => {
         const {name, data, mimetype} = file;
 
-        const uploadPath = fileNameBuilder(name, itemId, itemType,);
+        const uploadPath = fileNameBuilder(name, itemType, itemId);
 
         return bucket
             .upload({
