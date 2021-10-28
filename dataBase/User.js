@@ -20,7 +20,11 @@ const userSchema = new Schema({
     role: {
         type: String,
         default: constants.USER,
-        enum: constants.valueOf()
+        enum: [
+            constants.USER,
+            constants.ADMIN,
+            constants.MANAGER
+        ]
     },
     password: {
         type: String,
@@ -31,6 +35,9 @@ const userSchema = new Schema({
         type: Boolean,
         default: false,
         required: true
+    },
+    avatar: {
+        type:String
     }
 }, {timestamps: true, toObject: {virtuals: true}, toJSON: {virtuals: true}});
 

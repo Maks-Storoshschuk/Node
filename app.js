@@ -1,5 +1,6 @@
 const cors = require('cors');
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const rateLimit = require('express-rate-limit');
@@ -15,7 +16,9 @@ const {userRouter, authRouter} = require('./routes');
 
 const app = express();
 
-mongoose.connect(config.MongoConnectUrl);
+mongoose.connect(config.MongoConnectUrl).then(()=>{
+    console.log('Mongo connected successfully');
+});
 
 app.use(cors({origin: _configureCors}));
 app.use(helmet());
@@ -29,7 +32,7 @@ if (config.NODE_ENV === 'dev') {
 
     app.use(morgan('dev'));
 }
-
+app.use(fileUpload({}));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 

@@ -10,5 +10,16 @@ module.exports = {
     welcome: 'welcome',
     orderConfirmed: 'order.confirmed',
     ban: 'ban',
-    FORGOT_PASSWORD: 'forgotPassword'
+    FORGOT_PASSWORD: 'forgotPassword',
+
+    MAX_AVATAR_SIZE: 5*1024*1024,
+
+    PHOTOS_MIMETYPES: [
+        'image/gif',
+        'image/jpeg',
+        'image/png',
+        'image/pjpeg',
+        'image/tiff',
+        'image/webp'
+    ]
 };

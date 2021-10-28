@@ -1,6 +1,5 @@
 const {constants, tokenTypeEnum} = require('../config');
-const {jwtService} = require('../services');
-const {emailService} = require('../services');
+const {emailService, jwtService, S3services} = require('../services');
 const userService = require('../services/user.service');
 const {User, Action, O_auth} = require('../dataBase');
 
@@ -51,15 +50,23 @@ module.exports = {
 
     createUser: async (req, res, next) => {
         try {
-            const user = await User.createUserWithHashPassword(req.body);
-
-            const normUser = user.userNormalizer(user);
+            let user = await User.createUserWithHashPassword(req.body);
 
             const token = jwtService.createActionToken(tokenTypeEnum.ACTION);
 
             await Action.create({token, type: tokenTypeEnum.ACTION, user_id: user._id});
 
             await emailService.sendMail(req.body.email, constants.welcome, {userName: req.body.name, token});
+
+            const {avatar} = req.files;
+
+            if (avatar){
+                const uploadInfo= await S3services.uploadImage(avatar, 'users', user._id.toString());
+
+                user = await User.findByIdAndUpdate(user._id, {avatar: uploadInfo.Location}, {new:true});
+            }
+
+            const normUser = user.userNormalizer(user);
 
             res.status(constants.code201).json(normUser);
         } catch (e) {
