@@ -53,6 +53,6 @@ async function sendMail(email) {
     try {
         await emailService.sendMail(email, constants.hi, {userName: 'Мамина черешня'});
     } catch (e) {
-        return(e);
+        return (e);
     }
 }
