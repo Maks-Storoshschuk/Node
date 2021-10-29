@@ -3,6 +3,10 @@ module.exports = {
         templateName: 'welcome',
         subject: 'Welcome!!!'
     },
+    hi: {
+        templateName: 'hi',
+        subject: 'hi!'
+    },
     orderConfirmed: {
         templateName: 'order.confirmed',
         subject: 'Cool!!!'

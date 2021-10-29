@@ -8,6 +8,7 @@ module.exports = {
     code400: 400,
 
     welcome: 'welcome',
+    hi:'hi',
     orderConfirmed: 'order.confirmed',
     ban: 'ban',
     FORGOT_PASSWORD: 'forgotPassword',
