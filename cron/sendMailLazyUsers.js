@@ -1,13 +1,13 @@
 const dayJs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
-const {constants} = require('../config');
-const {emailService} = require('../services');
 const fs = require('fs');
 const path = require('path');
 
-dayJs.extend(utc);
-
+const {constants} = require('../config');
 const {O_auth} = require('../dataBase');
+const {emailService} = require('../services');
+
+dayJs.extend(utc);
 
 module.exports = async () => {
     const tenDays = dayJs.utc().subtract(10, 'day');
