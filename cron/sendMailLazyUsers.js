@@ -40,6 +40,7 @@ module.exports = async () => {
                     if (error) {
                         return (error);
                     }
+
                     sendMail(email);
                     Promise.allSettled(email);
                 });
